@@ -7,6 +7,6 @@ create table products(
     department_name varchar(255) not null,
     item_cost decimal(5,2) not null,
     item_quantity int not null,
-    primary key(item_id);
+    primary key(item_id)
 
 );
