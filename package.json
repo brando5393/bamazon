@@ -1,0 +1,25 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "An Amazon-like storefront with the MySQL",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brando5393/bamazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brando5393/bamazon/issues"
+  },
+  "homepage": "https://github.com/brando5393/bamazon#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "inquirer": "^7.0.6",
+    "mysql": "^2.18.1"
+  }
+}
