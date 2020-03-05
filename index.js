@@ -69,6 +69,25 @@ let mainFunc = () => {
         connection.query("select * from products", (req,res) =>{
             if(err) throw err;
             console.table(res);
+            inquirer.prompt({
+                type: "input",
+                message: "Please enter the ID of the item that you would like to buy:",
+                name: "itemID"
+            },{
+                type: "input",
+                message: "How many of this item would you like to buy:",
+                name: "itemQuantity"
+            }).then(answers =>{
+                connection.query("select * from products where item_id = ?"), (req,res) =>{
+                    if(res.item_quantity === 0){
+                        console.log("We're sorry, but the item you requested is out of stock");
+                        dbClose();
+                        mainFunc();
+                    }else{
+                        
+                    }
+                };
+            });
         });
         dbClose();
         mainFunc();
@@ -86,9 +105,9 @@ let mainFunc = () => {
                 exit[0];
             }else{
                 mainFunc();
-            }
-        })
-    }
+            };
+        });
+    };
 
 // code to run program
 
