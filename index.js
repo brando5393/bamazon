@@ -65,27 +65,46 @@ let mainFunc = () => {
 
     let buyItem = (err) =>{
         dbConnect();
-        console.log("\n");
         connection.query("select * from products", (req,res) =>{
             if(err) throw err;
+            console.log("\n");
             console.table(res);
             inquirer.prompt({
                 type: "input",
                 message: "Please enter the ID of the item that you would like to buy:",
+                // code breaks here and db closes
                 name: "itemID"
             },{
                 type: "input",
                 message: "How many of this item would you like to buy:",
                 name: "itemQuantity"
             }).then(answers =>{
-                connection.query("select * from products where item_id = ?"), (req,res) =>{
+                connection.query("select * from products where item_id = ?"), {item_id: answers.itemID}, (req,res) =>{
                     if(res.item_quantity === 0){
                         console.log("We're sorry, but the item you requested is out of stock");
                         dbClose();
                         mainFunc();
                     }else{
-                        
-                    }
+                        console.table(res);
+                        inquirer.prompt({
+                            type: "confirm",
+                            message: "Are you sure you would like to complete this transaction?",
+                            name: "purchaseAnswer"
+                        }).then(answers => {
+                            if(answers.purchaseAnswer === true){
+                                console.log("Item purchased, thank you for your business.");
+                                connection.query("update products set item_quantity = ? where item_id = ?");
+                                connection.query("select * from products where item_id = ?");
+                                console.table(res);
+                                dbClose();
+                                mainFunc();
+                            }else{
+                                console.log("Transaction canceled, have a nice day.");
+                                dbClose();
+                                mainFunc();
+                            };
+                        });
+                    };
                 };
             });
         });
