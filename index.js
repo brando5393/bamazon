@@ -79,8 +79,8 @@ let mainFunc = () => {
                 message: "How many of this item would you like to buy:",
                 name: "itemQuantity"
             }]).then(productAnswers =>{
-                connection.query("select * from products where item_id = ? ",productAnswers.itemID), (err,res) =>{
-                    console.log("random string");
+                console.log("random string");
+                connection.query("select * from products where item_id = ? ",productAnswers.itemID, (err,res) =>{
                     if(err) throw err;
                     console.log(res);
                     if(res.item_quantity === 0){
@@ -96,8 +96,9 @@ let mainFunc = () => {
                         }).then(answers => {
                             if(answers.purchaseAnswer === true){
                                 console.log("Item purchased, thank you for your business.");
-                                connection.query("update products set item_quantity = ? where item_id = ?"), [productAnswers.itemQuantity, productAnswers.itemID];
-                                connection.query("select * from products where item_id = ?");
+                                let transactionResult = currentitemquantity - productAnswers.itemQuantity;
+                                connection.query("update products set item_quantity = ? where item_id = ?"), [transactionResult, productAnswers.itemID];
+                                connection.query("select * from products where item_id = ?"), [productAnswers.itemID];
                                 console.table(res);
                                 dbClose();
                                 mainFunc();
@@ -109,7 +110,7 @@ let mainFunc = () => {
                         });
                     };
                 });
-            });
+            }).catch(err => console.log(err));
         });
         // dbClose();
         // mainFunc();
