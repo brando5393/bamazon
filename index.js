@@ -96,11 +96,13 @@ let mainFunc = () => {
                         }).then(answers => {
                             if(answers.purchaseAnswer === true){
                                 console.log("Item purchased, thank you for your business.");
-                                let transactionResult = currentitemquantity - productAnswers.itemQuantity;
-                                connection.query("update products set item_quantity = ? where item_id = ?"), [transactionResult, productAnswers.itemID];
-                                connection.query("select * from products where item_id = ?"), [productAnswers.itemID];
-                                console.table(res);
-                                dbClose();
+                                console.log(res);
+                                let transactionResult = res[0].item_quantity - productAnswers.itemQuantity;
+                                console.log(transactionResult);
+                                console.log(typeof res.item_quantity, typeof productAnswers.itemQuantity);connection.query("update products set item_quantity = ? where item_id = ?", [transactionResult, productAnswers.itemID]);
+                                
+                                // connection.query("select * from products where item_id = ?"), [productAnswers.itemID];
+                                // console.table(res);
                                 mainFunc();
                             }else{
                                 console.log("Transaction canceled, have a nice day.");
